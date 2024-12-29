@@ -22,5 +22,22 @@ class Stock extends Model
         'type',
         'stock_name'
     ];
+    // hidden, visible
+
+    // public static function new(array $request):self
+    // {
+    //     return self::create([
+
+    //     ])
+    // }
+
+    public static function new(array $request):self{
+        return self::create([
+            'industry_category' => $request["industry_category"],
+            'stock_id' => $request['stock_id'],
+            'type' =>$request['type'],
+            'stock_name' =>$request['stock_name']
+        ]);
+    }
 
 }
