@@ -1,27 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Resources\StockResources;
 use App\Models\Stock;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StockRequest;
 
 class StockController extends Controller{
     public function index()
     {
         $stocks = Stock::all();
-    
-        return response()->json($stocks); 
+        // make the single instance of $stock in array
+        return StockResources::collection($stocks); 
     }
-    public function store(Request $request){
-
-        $stock = Stock::create([
-            "industry_category"=>$request->input('industry_category'),
-            "stock_id"=>$request->input('stock_id'),
-            "type"=>$request->input('type'),
-            "stock_name"=>$request->input('stock_name'),
-        ]);
-
-        return $stock;
+    public function show(Stock $stock)
+    {
+        return StockResources::make($stock);
+    }
+    public function store(StockRequest $request){
+        // stockInfo restrict only these fields will be stored
+        $stock = Stock::new($request->stockInfo());
+        return new StockResources($stock);
     }
 
     public function edit($id){
